@@ -1,21 +1,18 @@
 package com.tstipanic.movieapp.presentation
 
-import com.tstipanic.movieapp.R
 import com.tstipanic.movieapp.local_database.MovieRepoImpl
 import com.tstipanic.movieapp.model.data.Movie
 import com.tstipanic.movieapp.model.interactor.MovieInteractor
 import com.tstipanic.movieapp.model.response.MoviesResponse
 import com.tstipanic.movieapp.networking.BackendFactory
 import com.tstipanic.movieapp.ui.grid_screen.MovieGridContract
-import kotlinx.android.synthetic.main.fragment_grid.*
-import kotlinx.android.synthetic.main.item_movie.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MovieGridPresenter: MovieGridContract.Presenter {
+class MovieGridPresenter : MovieGridContract.Presenter {
 
-    
+    private lateinit var view: MovieGridContract.View
     private val apiInteractor: MovieInteractor by lazy { BackendFactory.getMovieInteractor() }
     private val movieList = arrayListOf<Movie>()
     private val appDatabase by lazy { MovieRepoImpl() }
@@ -37,49 +34,41 @@ class MovieGridPresenter: MovieGridContract.Presenter {
     override fun onFavoriteMenuSelected() {
         movieList.clear()
         movieList.addAll(favoriteParse(appDatabase.getFavoriteMovies()))
-        gridAdapter.setMovies(movieList)
+        view.setGridList(movieList)
     }
 
 
-
     private fun moviesCallback(): Callback<MoviesResponse> = object : Callback<MoviesResponse> {
-            override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
-                t.printStackTrace()
-            }
+        override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
+            view.onMovieCallbackFailure(t)
+        }
 
-            override fun onResponse(
-                call: Call<MoviesResponse>,
-                response: Response<MoviesResponse>
-            ) {
-                if (response.isSuccessful) {
-                    response.body()?.movies?.run {
-                        movieList.clear()
-                        movieList.addAll(favoriteParse(this))
-                        gridAdapter.setMovies(movieList)
-                        moviesGrid.scrollToPosition(0)
-                    }
+        override fun onResponse(call: Call<MoviesResponse>, response: Response<MoviesResponse>) {
+            if (response.isSuccessful) {
+                response.body()?.movies?.run {
+                    movieList.clear()
+                    movieList.addAll(favoriteParse(this))
+                    view.setGridList(this)
+                    view.scrollOnTop()
                 }
             }
         }
+    }
 
-    private fun onFavoriteClicked(movie: Movie) {
+    override fun onFavoriteClicked(movie: Movie) {
 
         if (movie.isFavorite) {
             movie.isFavorite = false
             appDatabase.deleteFavoriteMovie(movie)
-
-            movieFavorite.setImageResource(R.drawable.ic_favorite_empty)
+            view.setUnfavoriteIcon()
             view.bottomNavState()
-
-
 
         } else {
             movie.isFavorite = true
+            view.setFavoriteIcon()
             appDatabase.addFavoriteMovie(movie)
-            movieFavorite.setImageResource(R.drawable.ic_favorite_full)
-
         }
-        gridAdapter.notifyDataSetChanged()
+        view.refreshGrid()
     }
 
 
@@ -90,4 +79,6 @@ class MovieGridPresenter: MovieGridContract.Presenter {
         }
         return movieList
     }
+
+    override fun getMovieList(): ArrayList<Movie> = movieList
 }
