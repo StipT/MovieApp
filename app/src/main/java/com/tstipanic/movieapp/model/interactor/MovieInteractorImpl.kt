@@ -7,6 +7,7 @@ import com.tstipanic.movieapp.networking.MovieApiService
 import retrofit2.Callback
 
 class MovieInteractorImpl(private val apiService: MovieApiService): MovieInteractor {
+
     override fun getPopularMovies(popularMoviesCallback: Callback<MoviesResponse>) {
         apiService.getPopularMovies().enqueue(popularMoviesCallback)
     }

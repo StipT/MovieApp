@@ -3,18 +3,16 @@ package com.tstipanic.movieapp.presentation
 import com.tstipanic.movieapp.model.data.Movie
 import com.tstipanic.movieapp.model.interactor.MovieInteractor
 import com.tstipanic.movieapp.model.response.ReviewsResponse
-import com.tstipanic.movieapp.networking.BackendFactory
 import com.tstipanic.movieapp.ui.details_screen.MovieDetailsContract
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MovieDetailsPresenter: MovieDetailsContract.Presenter {
+class MovieDetailsPresenter(private val apiInteractor: MovieInteractor) : MovieDetailsContract.Presenter {
 
     private lateinit var view: MovieDetailsContract.View
 
 
-    private val apiInteractor: MovieInteractor by lazy { BackendFactory.getMovieInteractor() }
     override fun setView(view: MovieDetailsContract.View) {
        this.view = view
     }

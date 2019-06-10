@@ -20,11 +20,17 @@ interface MovieGridContract {
 
         fun scrollOnTop()
 
+        fun showProgress()
+
+        fun hideProgress()
+
     }
 
     interface Presenter {
 
         fun setView(view: View)
+
+        fun onResume()
 
         fun onPopularMenuSelected()
 

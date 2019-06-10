@@ -1,33 +1,36 @@
 package com.tstipanic.movieapp.presentation
 
-import com.tstipanic.movieapp.local_database.MovieRepoImpl
+import com.tstipanic.movieapp.local_database.MovieRepo
 import com.tstipanic.movieapp.model.data.Movie
 import com.tstipanic.movieapp.model.interactor.MovieInteractor
 import com.tstipanic.movieapp.model.response.MoviesResponse
-import com.tstipanic.movieapp.networking.BackendFactory
 import com.tstipanic.movieapp.ui.grid_screen.MovieGridContract
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MovieGridPresenter : MovieGridContract.Presenter {
+class MovieGridPresenter(
+    private val apiInteractor: MovieInteractor,
+    private val appDatabase: MovieRepo
+) : MovieGridContract.Presenter {
 
     private lateinit var view: MovieGridContract.View
-    private val apiInteractor: MovieInteractor by lazy { BackendFactory.getMovieInteractor() }
-    private val movieList = arrayListOf<Movie>()
-    private val appDatabase by lazy { MovieRepoImpl() }
 
+    private val movieList = arrayListOf<Movie>()
+    private var firstOnResume = true
 
     override fun setView(view: MovieGridContract.View) {
         this.view = view
     }
 
     override fun onPopularMenuSelected() {
+        view.showProgress()
         apiInteractor.getPopularMovies(moviesCallback())
     }
 
 
     override fun onTopRatedMenuSelected() {
+        view.showProgress()
         apiInteractor.getTopMovies(moviesCallback())
     }
 
@@ -41,6 +44,7 @@ class MovieGridPresenter : MovieGridContract.Presenter {
     private fun moviesCallback(): Callback<MoviesResponse> = object : Callback<MoviesResponse> {
         override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
             view.onMovieCallbackFailure(t)
+            view.hideProgress()
         }
 
         override fun onResponse(call: Call<MoviesResponse>, response: Response<MoviesResponse>) {
@@ -52,6 +56,7 @@ class MovieGridPresenter : MovieGridContract.Presenter {
                     view.scrollOnTop()
                 }
             }
+            view.hideProgress()
         }
     }
 
@@ -71,6 +76,12 @@ class MovieGridPresenter : MovieGridContract.Presenter {
         view.refreshGrid()
     }
 
+    override fun onResume() {
+        if (firstOnResume) {
+            onPopularMenuSelected()
+            firstOnResume = false
+        }
+    }
 
     private fun favoriteParse(movieList: List<Movie>): List<Movie> {
         val favoriteMovies = appDatabase.getFavoriteMovies()

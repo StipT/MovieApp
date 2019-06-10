@@ -1,11 +1,8 @@
 package com.tstipanic.movieapp.local_database
 
-import com.tstipanic.movieapp.MovieApp
 import com.tstipanic.movieapp.model.data.Movie
 
-class MovieRepoImpl: MovieRepo {
-
-    private var db: MoviesDatabase = MoviesDatabase.getInstance(MovieApp.getAppContext())
+class MovieRepoImpl(db: MoviesDatabase) : MovieRepo {
 
     private var movieDao: MoviesDao = db.moviesDao()
 

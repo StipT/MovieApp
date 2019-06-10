@@ -10,33 +10,33 @@ import com.tstipanic.movieapp.R
 import com.tstipanic.movieapp.common.SPAN_COUNT
 import com.tstipanic.movieapp.common.showFragment
 import com.tstipanic.movieapp.model.data.Movie
-import com.tstipanic.movieapp.presentation.MovieGridPresenter
 import com.tstipanic.movieapp.ui.details_screen.MoviesPagerFragment
 import com.tstipanic.movieapp.ui.grid_screen.adapters.MoviesGridAdapter
 import kotlinx.android.synthetic.main.fragment_grid.*
 import kotlinx.android.synthetic.main.item_movie.*
+import org.koin.android.ext.android.inject
+
 
 class MovieGridFragment : Fragment(), MovieGridContract.View {
 
-    private val presenter: MovieGridContract.Presenter by lazy { MovieGridPresenter()}
+    private val presenter by inject<MovieGridContract.Presenter>()
 
-    private val gridAdapter by lazy {
-        MoviesGridAdapter({ onMovieClicked(it) }, { presenter.onFavoriteClicked(it) })
-    }
+    private val gridAdapter by lazy { MoviesGridAdapter({ onMovieClicked(it) }, { presenter.onFavoriteClicked(it) }) }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_grid, container, false)
-
-    override fun onResume() {
-        super.onResume()
+    ): View? {
         presenter.setView(this)
+        return inflater.inflate(R.layout.fragment_grid, container, false)
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         moviesGrid.apply {
             adapter = gridAdapter
             layoutManager = GridLayoutManager(context, SPAN_COUNT)
@@ -44,9 +44,9 @@ class MovieGridFragment : Fragment(), MovieGridContract.View {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        presenter.onPopularMenuSelected()
+    override fun onResume() {
+        super.onResume()
+        presenter.onResume()
     }
 
     private fun setUpNavigationListener() {
@@ -71,6 +71,14 @@ class MovieGridFragment : Fragment(), MovieGridContract.View {
     override fun onMovieCallbackFailure(t: Throwable) {
         t.printStackTrace()
         //TODO toast
+    }
+
+    override fun showProgress() {
+        progressBar.visibility = View.VISIBLE
+    }
+
+    override fun hideProgress() {
+        progressBar.visibility = View.GONE
     }
 
     override fun refreshGrid() {

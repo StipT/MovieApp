@@ -11,15 +11,14 @@ import com.tstipanic.movieapp.common.MOVIE_EXTRA
 import com.tstipanic.movieapp.common.loadImage
 import com.tstipanic.movieapp.model.data.Movie
 import com.tstipanic.movieapp.model.data.Review
-
-import com.tstipanic.movieapp.presentation.MovieDetailsPresenter
 import com.tstipanic.movieapp.ui.details_screen.adapters.ReviewAdapter
 import kotlinx.android.synthetic.main.fragment_details.*
+import org.koin.android.ext.android.inject
 
 class MovieDetailsFragment : Fragment(), MovieDetailsContract.View {
 
+    private val presenter by inject<MovieDetailsContract.Presenter>()
     private val reviewsAdapter by lazy { ReviewAdapter() }
-    private val presenter: MovieDetailsContract.Presenter by lazy { MovieDetailsPresenter() }
 
     private lateinit var movie: Movie
 

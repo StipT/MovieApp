@@ -35,7 +35,6 @@ class MoviesPagerFragment : Fragment() {
 
         val movieList = arrayListOf<Movie>()
          movieList.addAll(arguments?.getParcelableArrayList(PAGER_LIST_EXTRA)!!)
-
         moviePager.adapter = pagerAdapter
 
         pagerAdapter.setMovies(movieList)
