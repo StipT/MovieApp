@@ -10,5 +10,5 @@ class MovieRepoImpl(db: MoviesDatabase) : MovieRepo {
 
     override fun deleteFavoriteMovie(movie: Movie) = movieDao.deleteFavoriteMovie(movie)
 
-    override fun getFavoriteMovies(): List<Movie> = movieDao.getFavoriteMovies()
+    override fun getFavoriteMovies(userId: String): List<Movie> = movieDao.getFavoriteMovies(userId)
 }

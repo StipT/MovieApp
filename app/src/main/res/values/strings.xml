@@ -3,4 +3,18 @@
     <string name="menu_title_popular">Popular</string>
     <string name="menu_title_toprated">Top Rated</string>
     <string name="menu_title_favorites">Favorites</string>
+    <string name="menu_title_search">Search</string>
+    <string name="login_email">Email</string>
+    <string name="login_password">Password</string>
+    <string name="register_now_text">Register Now for FREE</string>
+    <string name="login_button">Login</string>
+    <string name="register_title">Create a new account</string>
+    <string name="register_button">Register</string>
+    <string name="register_username">Username</string>
+    <string name="goto_login_register_text"><![CDATA[<- Login]]></string>
+    <string name="cancel_button_text">Cancel</string>
+    <string name="logout_button_text">Log out</string>
+    <string name="logout_title_text">Would you like to log out?</string>
+    <string name="search_hint">Search</string>
+    <string name="search_button_text">Search</string>
 </resources>

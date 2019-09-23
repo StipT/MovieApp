@@ -16,6 +16,6 @@ interface MoviesDao {
     @Delete
     fun deleteFavoriteMovie(movie: Movie)
 
-    @Query("SELECT * FROM Movie")
-    fun getFavoriteMovies(): List<Movie>
+    @Query("SELECT * FROM Movie WHERE userId = :userId")
+    fun getFavoriteMovies(userId: String): List<Movie>
 }

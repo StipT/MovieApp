@@ -1,5 +1,6 @@
 package com.tstipanic.movieapp.presentation
 
+import com.google.firebase.auth.FirebaseAuth
 import com.tstipanic.movieapp.local_database.MovieRepo
 import com.tstipanic.movieapp.model.data.Movie
 import com.tstipanic.movieapp.model.interactor.MovieInteractor
@@ -17,6 +18,7 @@ class MovieGridPresenter(
     private lateinit var view: MovieGridContract.View
 
     private val movieList = arrayListOf<Movie>()
+    private val uid = FirebaseAuth.getInstance().uid!!
     private var firstOnResume = true
 
     override fun setView(view: MovieGridContract.View) {
@@ -25,6 +27,7 @@ class MovieGridPresenter(
 
     override fun onPopularMenuSelected() {
         view.showProgress()
+
         apiInteractor.getPopularMovies(moviesCallback())
     }
 
@@ -36,7 +39,7 @@ class MovieGridPresenter(
 
     override fun onFavoriteMenuSelected() {
         movieList.clear()
-        movieList.addAll(favoriteParse(appDatabase.getFavoriteMovies()))
+        movieList.addAll(favoriteParse(appDatabase.getFavoriteMovies(uid)))
         view.setGridList(movieList)
     }
 
@@ -71,6 +74,7 @@ class MovieGridPresenter(
         } else {
             movie.isFavorite = true
             view.setFavoriteIcon()
+            movie.userId = uid
             appDatabase.addFavoriteMovie(movie)
         }
         view.refreshGrid()
@@ -84,8 +88,9 @@ class MovieGridPresenter(
     }
 
     private fun favoriteParse(movieList: List<Movie>): List<Movie> {
-        val favoriteMovies = appDatabase.getFavoriteMovies()
+        val favoriteMovies = appDatabase.getFavoriteMovies(uid)
         for (movie in movieList) {
+            movie.userId = uid
             if (favoriteMovies.contains(movie)) movie.isFavorite = true
         }
         return movieList

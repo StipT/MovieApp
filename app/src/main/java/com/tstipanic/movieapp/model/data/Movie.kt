@@ -17,7 +17,8 @@ data class Movie(
     @SerializedName("overview") val overview: String,
     @SerializedName("release_date") val releaseDate: String,
     @SerializedName("title") val title: String,
-    @SerializedName("vote_average") val averageVote: Float
+    @SerializedName("vote_average") val averageVote: Float,
+    var userId: String = ""
 ) : Parcelable {
     @Ignore
     @IgnoredOnParcel

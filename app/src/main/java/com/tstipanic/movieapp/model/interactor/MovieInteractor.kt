@@ -14,4 +14,6 @@ interface MovieInteractor {
     fun getMovie(movieId: Int, movieCallback: Callback<Movie>)
 
     fun getMovieReview(movieId: Int, reviewCallback: Callback<ReviewsResponse>)
+
+    fun getSearchResultMovies(query: String, moviesCallback: Callback<MoviesResponse>)
 }

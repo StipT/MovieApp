@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent" android:id="@+id/searchLayout">
+
+    <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@+id/backButton"
+            android:layout_marginStart="8dp"
+            android:imeOptions="actionSearch"
+            android:hint="@string/search_hint" android:id="@+id/searchEditText" android:textAlignment="center"/>
+    <ImageView
+            android:layout_width="75dp"
+            android:layout_height="75dp" app:srcCompat="@drawable/ic_back"
+            android:id="@+id/backButton" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
+            android:backgroundTint="@color/colorPrimaryLight"/>
+    <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" android:id="@+id/searchRecycler"
+            app:layout_constraintTop_toBottomOf="@+id/searchProgress" android:layout_marginTop="8dp"
+    />
+    <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" android:id="@+id/searchButton"
+            app:layout_constraintEnd_toEndOf="@+id/searchEditText" android:layout_marginEnd="8dp"
+            android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/searchEditText"
+            app:layout_constraintStart_toEndOf="@+id/backButton" android:layout_marginStart="8dp"
+            android:text="@string/search_button_text" android:textColor="@color/colorAccent" android:textSize="18sp"
+            android:textStyle="bold|italic" android:background="@color/colorPrimaryLight"/>
+    <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:id="@+id/searchProgress"
+            app:layout_constraintEnd_toEndOf="@+id/searchRecycler"
+            app:layout_constraintStart_toStartOf="@+id/searchRecycler" android:indeterminateOnly="false"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/searchButton"
+            android:indeterminate="true" android:visibility="gone"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

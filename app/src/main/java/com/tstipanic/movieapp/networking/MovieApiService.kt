@@ -6,18 +6,22 @@ import com.tstipanic.movieapp.model.response.ReviewsResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface MovieApiService {
 
-    @GET("popular")
+    @GET("movie/popular")
     fun getPopularMovies(): Call<MoviesResponse>
 
-    @GET("top_rated")
+    @GET("movie/top_rated")
     fun getTopMovies(): Call<MoviesResponse>
 
-    @GET("{id}")
+    @GET("movie/{id}")
     fun getMovie(@Path(value = "id") movieId: Int): Call<Movie>
 
-    @GET("{id}/reviews")
+    @GET("movie/{id}/reviews")
     fun getReviews(@Path(value = "id") movieId: Int): Call<ReviewsResponse>
+
+    @GET("search/movie")
+    fun getSearchResultMovies(@Query(value = "query") query: String): Call<MoviesResponse>
 }

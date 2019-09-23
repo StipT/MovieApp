@@ -64,16 +64,26 @@ class MovieDetailsFragment : Fragment(), MovieDetailsContract.View {
         movieOverview.text = movie.overview
         movieReleaseDate.text = movie.releaseDate
         movieVoteAverage.text = movie.averageVote.toString()
+        movieFavoriteIcon.setOnClickListener { presenter.onFavoriteClicked(movie) }
         if (movie.isFavorite) {
-            favoriteIcon.visibility = View.VISIBLE
+            movieFavoriteIcon.setImageResource(R.drawable.ic_favorite_full)
         } else {
-            favoriteIcon.visibility = View.GONE
+            movieFavoriteIcon.setImageResource(R.drawable.ic_favorite_empty)
         }
 
         movieReviewList.apply {
             adapter = reviewsAdapter
             layoutManager = LinearLayoutManager(context)
         }
+    }
+
+
+    override fun setFavoriteIcon() {
+        movieFavoriteIcon.setImageResource(R.drawable.ic_favorite_full)
+    }
+
+    override fun setUnfavoriteIcon() {
+        movieFavoriteIcon.setImageResource(R.drawable.ic_favorite_empty)
     }
 
 

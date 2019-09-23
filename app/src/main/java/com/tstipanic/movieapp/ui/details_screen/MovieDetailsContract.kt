@@ -10,6 +10,9 @@ interface MovieDetailsContract {
 
         fun onReviewCallbackFailure(t: Throwable)
 
+        fun setUnfavoriteIcon()
+
+        fun setFavoriteIcon()
 
     }
 
@@ -17,5 +20,7 @@ interface MovieDetailsContract {
         fun setView(view: View)
 
         fun getReviews(movie: Movie)
+
+        fun onFavoriteClicked(movie: Movie)
     }
 }

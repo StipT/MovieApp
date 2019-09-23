@@ -23,4 +23,8 @@ class MovieInteractorImpl(private val apiService: MovieApiService): MovieInterac
     override fun getMovieReview(movieId: Int, reviewCallback: Callback<ReviewsResponse>) {
     apiService.getReviews(movieId).enqueue(reviewCallback)
     }
+
+    override fun getSearchResultMovies(query: String, moviesCallback: Callback<MoviesResponse>) {
+        apiService.getSearchResultMovies(query).enqueue(moviesCallback)
+    }
 }

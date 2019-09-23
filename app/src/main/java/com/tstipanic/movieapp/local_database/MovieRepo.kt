@@ -10,5 +10,5 @@ interface MovieRepo {
     fun deleteFavoriteMovie(movie: Movie)
 
 
-    fun getFavoriteMovies(): List<Movie>
+    fun getFavoriteMovies(userId: String): List<Movie>
 }

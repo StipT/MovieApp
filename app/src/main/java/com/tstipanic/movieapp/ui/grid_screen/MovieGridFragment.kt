@@ -1,5 +1,6 @@
 package com.tstipanic.movieapp.ui.grid_screen
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import com.tstipanic.movieapp.common.showFragment
 import com.tstipanic.movieapp.model.data.Movie
 import com.tstipanic.movieapp.ui.details_screen.MoviesPagerFragment
 import com.tstipanic.movieapp.ui.grid_screen.adapters.MoviesGridAdapter
+import com.tstipanic.movieapp.ui.search_screen.SearchActivity
 import kotlinx.android.synthetic.main.fragment_grid.*
 import kotlinx.android.synthetic.main.item_movie.*
 import org.koin.android.ext.android.inject
@@ -36,13 +38,20 @@ class MovieGridFragment : Fragment(), MovieGridContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         moviesGrid.apply {
             adapter = gridAdapter
             layoutManager = GridLayoutManager(context, SPAN_COUNT)
-            setUpNavigationListener()
+        }
+        setUpNavigationListener()
+        floatingAccount.setOnClickListener {
+            LogoutFragment().show(fragmentManager, "Logout")
+        }
+        floatingSearch.setOnClickListener {
+            startActivity(Intent(requireContext(), SearchActivity::class.java))
         }
     }
+
+
 
     override fun onResume() {
         super.onResume()
@@ -67,6 +76,7 @@ class MovieGridFragment : Fragment(), MovieGridContract.View {
     override fun scrollOnTop() {
         moviesGrid.scrollToPosition(0)
     }
+
 
     override fun onMovieCallbackFailure(t: Throwable) {
         t.printStackTrace()
@@ -106,6 +116,4 @@ class MovieGridFragment : Fragment(), MovieGridContract.View {
             true
         )
     }
-
-
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools" android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/emailText" android:layout_margin="16dp"
+            tools:text="123" android:textStyle="bold|italic" android:textSize="18sp" android:textAlignment="center"/>
+    <TextView
+            android:text="@string/logout_title_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/logoutTitle" tools:text="Would you like to logout?"
+            android:textStyle="bold" android:textAlignment="center" android:layout_margin="16dp"
+            android:textSize="18sp"/>
+    <Button
+            android:text="@string/logout_button_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/logoutButton"
+            android:background="@color/colorAccent" android:textColor="@android:color/white" android:textStyle="bold"
+            android:layout_margin="16dp"/>
+    <Button
+            android:text="@string/cancel_button_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/cancelButton"
+            android:textColor="@android:color/white" android:background="@color/colorAccent" android:textStyle="bold"
+            android:layout_margin="16dp"/>
+</LinearLayout>
