@@ -48,17 +48,18 @@ class MovieDetailsPresenter(
         }
 
         override fun onResponse(call: Call<ReviewsResponse>, response: Response<ReviewsResponse>) {
-            if (response.isSuccessful){
+            if (response.isSuccessful) {
                 response.body()?.reviews?.run {
                     if (!this.isNullOrEmpty()) {
                         view.setReviewList(this)
                     } else {
-                        view.showNoReviews()
+                        try {
+                            view.showNoReviews()
+                        } catch (e: IllegalStateException) {
+                        }
                     }
                 }
             }
         }
     }
-
-
 }

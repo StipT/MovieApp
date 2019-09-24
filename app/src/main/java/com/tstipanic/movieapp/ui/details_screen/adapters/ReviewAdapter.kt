@@ -27,4 +27,6 @@ class ReviewAdapter : RecyclerView.Adapter<ReviewViewHolder>(){
     override fun onBindViewHolder(holder: ReviewViewHolder, position: Int) {
         holder.bindData(reviewsList[position])
     }
+
+    fun isEmpty(): Boolean = reviewsList.isEmpty()
 }
