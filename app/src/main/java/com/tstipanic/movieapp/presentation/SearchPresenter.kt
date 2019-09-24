@@ -33,24 +33,29 @@ class SearchPresenter(
     private fun moviesCallback(): Callback<MoviesResponse> = object : Callback<MoviesResponse> {
         override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
             view.showToast("Something went wrong")
+            view.showNoResultImage()
             view.hideProgress()
         }
 
         override fun onResponse(call: Call<MoviesResponse>, response: Response<MoviesResponse>) {
             if (response.isSuccessful) {
+                view.hideNoResultImage()
                 response.body()?.movies?.run {
                     movieList.clear()
                     movieList.addAll(favoriteParse(this))
                     view.setRecyclerList(this)
                     view.setRecyclerList(favoriteParse(this))
+                    if (this.isEmpty()) {
+                        view.showNoResultImage()
+                    }
+
                 }
+                view.hideProgress()
             }
-            view.hideProgress()
         }
     }
 
     override fun onIntent(movie: Movie) {
-        //movie.userId = uid
         view.initiateIntent(movie)
     }
 
@@ -71,7 +76,6 @@ class SearchPresenter(
 
     private fun favoriteParse(movieList: List<Movie>): List<Movie> {
         val favoriteMovies = appDatabase.getFavoriteMovies(uid)
-        println("================== > UID " + uid)
         for (movie in movieList) {
             movie.userId = uid
             if (favoriteMovies.contains(movie)) movie.isFavorite = true

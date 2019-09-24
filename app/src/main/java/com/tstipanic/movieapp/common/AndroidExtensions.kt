@@ -13,7 +13,6 @@ fun View.hideKeyboard() {
     imm.hideSoftInputFromWindow(windowToken, 0)
 }
 
-
 fun ImageView.loadImage(imageUrl: String) {
     Glide.with(this).load(IMAGE_URL + imageUrl).into(this)
 }

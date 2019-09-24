@@ -29,10 +29,11 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
         setContentView(R.layout.activity_search)
 
         presenter.setView(this)
+        hideNoResultImage()
         setRecycler()
 
         backButton.setOnClickListener { onBackPressed() }
-        val editorListener: TextView.OnEditorActionListener = TextView.OnEditorActionListener { v, actionId, event ->
+        val editorListener: TextView.OnEditorActionListener = TextView.OnEditorActionListener { _, _, _ ->
             onSearchClick()
             false
         }
@@ -53,9 +54,11 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
     }
 
     private fun onSearchClick() {
-        showProgress()
-        presenter.getMovies((searchEditText.text.toString()))
-        searchButton.hideKeyboard()
+        if (!searchEditText.text.isNullOrBlank()) {
+            showProgress()
+            presenter.getMovies((searchEditText.text.toString()))
+            searchButton.hideKeyboard()
+        }
     }
 
 
@@ -97,5 +100,13 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
         intent.putExtra(EXTRA_OBJECT, movie)
         intent.putExtra(EXTRA_BOOLEAN, movie.isFavorite)
         startActivity(intent)
+    }
+
+    override fun showNoResultImage() {
+        noResultsImage.visibility = View.VISIBLE
+    }
+
+    override fun hideNoResultImage() {
+        noResultsImage.visibility = View.INVISIBLE
     }
 }

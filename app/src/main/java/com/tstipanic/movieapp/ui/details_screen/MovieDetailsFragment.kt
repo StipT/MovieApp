@@ -39,7 +39,6 @@ class MovieDetailsFragment : Fragment(), MovieDetailsContract.View {
 
     override fun onReviewCallbackFailure(t: Throwable) {
         t.printStackTrace()
-        //TODO toast
     }
 
     override fun onResume() {
@@ -86,5 +85,11 @@ class MovieDetailsFragment : Fragment(), MovieDetailsContract.View {
         movieFavoriteIcon.setImageResource(R.drawable.ic_favorite_empty)
     }
 
+    override fun showNoReviews() {
+        noReviewsText.visibility = View.VISIBLE
+    }
 
+    override fun hideNoReviews() {
+        noReviewsText.visibility = View.INVISIBLE
+    }
 }

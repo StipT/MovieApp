@@ -50,7 +50,11 @@ class MovieDetailsPresenter(
         override fun onResponse(call: Call<ReviewsResponse>, response: Response<ReviewsResponse>) {
             if (response.isSuccessful){
                 response.body()?.reviews?.run {
-                    view.setReviewList(this)
+                    if (!this.isNullOrEmpty()) {
+                        view.setReviewList(this)
+                    } else {
+                        view.showNoReviews()
+                    }
                 }
             }
         }

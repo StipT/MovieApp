@@ -22,6 +22,10 @@ interface SearchContract {
 
         fun initiateIntent(movie: Movie)
 
+        fun showNoResultImage()
+
+        fun hideNoResultImage()
+
     }
 
     interface Presenter {

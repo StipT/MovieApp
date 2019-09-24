@@ -14,6 +14,10 @@ interface MovieDetailsContract {
 
         fun setFavoriteIcon()
 
+        fun showNoReviews()
+
+        fun hideNoReviews()
+
     }
 
     interface Presenter {

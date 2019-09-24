@@ -1,6 +1,7 @@
 package com.tstipanic.movieapp.ui.search_screen
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tstipanic.movieapp.R
@@ -73,6 +74,12 @@ class ResultActivity : AppCompatActivity(), MovieDetailsContract.View {
         movieFavoriteIcon.setImageResource(R.drawable.ic_favorite_empty)
     }
 
+    override fun showNoReviews() {
+        noReviewsText.visibility = View.VISIBLE
+    }
 
+    override fun hideNoReviews() {
+        noReviewsText.visibility = View.INVISIBLE
+    }
 }
 

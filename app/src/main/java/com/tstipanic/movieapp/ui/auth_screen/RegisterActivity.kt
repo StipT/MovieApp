@@ -4,72 +4,80 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.tstipanic.movieapp.R
 import kotlinx.android.synthetic.main.activity_register.*
+import org.koin.android.ext.android.inject
 
-class RegisterActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity(), RegisterContract.View {
 
-    private var auth: FirebaseAuth? = null
+    private val presenter by inject<RegisterContract.Presenter>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-        auth = FirebaseAuth.getInstance()
-        registerButton.setOnClickListener { registerUser() }
+        presenter.setView(this)
+        registerButton.setOnClickListener { presenter.userRegister() }
+
+        val editorListener: TextView.OnEditorActionListener = TextView.OnEditorActionListener { _, _, _ ->
+            presenter.userRegister()
+            false
+        }
+        registerPasswordRe.setOnEditorActionListener(editorListener)
     }
 
 
-    private fun registerUser() {
+    override fun goToLoginActivity() {
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+    }
+
+    override fun validateInfo() {
         val email = emailRegister.text.toString().trim()
         val password = registerPassword.text.toString().trim()
         val password2 = registerPasswordRe.text.toString().trim()
 
         if (email.isEmpty()) {
-            emailRegister.error = "Email is required"
+            emailRegister.error = getString(R.string.error_email_required)
             emailRegister.requestFocus()
         }
 
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailRegister.error = "Enter a valid email"
+            emailRegister.error = getString(R.string.login_error_email)
             emailRegister.requestFocus()
         }
 
         if (password.isEmpty()) {
-            registerPassword.error = "Password is required"
+            registerPassword.error = getString(R.string.login_error_password)
             registerPassword.requestFocus()
         }
 
         if (password.length < 6) {
-            registerPassword.error = "Minimum lenght of password should be 6"
+            registerPassword.error = getString(R.string.login_error_short_password)
             registerPassword.requestFocus()
         }
 
         if (password != password2) {
-            registerPasswordRe.error = "Password does not match"
+            registerPasswordRe.error = getString(R.string.error_password_match)
             registerPasswordRe.requestFocus()
         } else {
-            registerProgressBar.visibility = View.VISIBLE
-            auth?.createUserWithEmailAndPassword(email, password)?.addOnCompleteListener {
-
-                if (it.isSuccessful) {
-                    Toast.makeText(applicationContext, "You have been successfully registered", Toast.LENGTH_LONG)
-                        .show()
-                    val intent = Intent(this, LoginActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                } else run {
-                    if (it.exception is FirebaseAuthUserCollisionException) {
-                        Toast.makeText(applicationContext, "This email is already registered", Toast.LENGTH_LONG).show()
-                    } else {
-                        Toast.makeText(applicationContext, it.exception!!.message, Toast.LENGTH_LONG).show()
-                    }
-                }
-                registerProgressBar.visibility = View.GONE
-            }
+            presenter.signUp(email, password)
         }
+    }
+
+    override fun showToast(message: String) {
+        Toast.makeText(baseContext, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showProgress() {
+        registerProgressBar.visibility = View.VISIBLE
+    }
+
+    override fun hideProgress() {
+        registerProgressBar.visibility = View.GONE
     }
 }

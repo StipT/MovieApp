@@ -17,4 +17,10 @@
     <string name="logout_title_text">Would you like to log out?</string>
     <string name="search_hint">Search</string>
     <string name="search_button_text">Search</string>
+    <string name="login_error_email">Enter valid email</string>
+    <string name="login_error_password">Password is required</string>
+    <string name="login_error_short_password">Minimum length for a password should be 6</string>
+    <string name="error_password_match">Password does not match</string>
+    <string name="error_email_required">Email is required</string>
+    <string name="no_reviews_text">There are no reviews available for this movie...</string>
 </resources>
