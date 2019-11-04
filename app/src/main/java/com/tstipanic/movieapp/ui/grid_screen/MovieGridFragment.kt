@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.tstipanic.movieapp.R
 import com.tstipanic.movieapp.common.SPAN_COUNT
-import com.tstipanic.movieapp.common.showFragment
 import com.tstipanic.movieapp.model.data.Movie
 import com.tstipanic.movieapp.ui.details_screen.MoviesPagerFragment
 import com.tstipanic.movieapp.ui.grid_screen.adapters.MoviesGridAdapter
@@ -110,10 +109,10 @@ class MovieGridFragment : Fragment(), MovieGridContract.View {
     }
 
     private fun onMovieClicked(position: Int) {
-        activity?.showFragment(
-            R.id.mainFragmentHolder,
-            MoviesPagerFragment.getInstance(presenter.getMovieList(), position),
-            true
-        )
+        fragmentManager!!
+            .beginTransaction()
+            .replace(R.id.mainFragmentHolder, MoviesPagerFragment.getInstance(presenter.getMovieList(), position))
+            .addToBackStack(tag)
+            .commit()
     }
 }

@@ -1,11 +1,13 @@
 package com.tstipanic.movieapp.ui.search_screen
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tstipanic.movieapp.R
 import com.tstipanic.movieapp.common.EXTRA_BOOLEAN
+import com.tstipanic.movieapp.common.EXTRA_IMAGE_TRANSITION_NAME
 import com.tstipanic.movieapp.common.EXTRA_OBJECT
 import com.tstipanic.movieapp.common.loadImage
 import com.tstipanic.movieapp.model.data.Movie
@@ -29,8 +31,14 @@ class ResultActivity : AppCompatActivity(), MovieDetailsContract.View {
         initUi(movie)
         presenter.getReviews(movie)
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val transitionExtra = intent.extras.getString(EXTRA_IMAGE_TRANSITION_NAME)
+            movieImagePoster.transitionName = transitionExtra
 
+        }
     }
+
+
 
     override fun setReviewList(list: List<Review>) {
         reviewsAdapter.setReviewList(list)
@@ -51,7 +59,7 @@ class ResultActivity : AppCompatActivity(), MovieDetailsContract.View {
         movieOverview.text = movie.overview
         movieReleaseDate.text = movie.releaseDate
         movieVoteAverage.text = movie.averageVote.toString()
-        movieImage.loadImage(movie.poster)
+        movieImagePoster.loadImage(movie.poster)
         movieFavoriteIcon.setOnClickListener { presenter.onFavoriteClicked(movie) }
         if (movie.isFavorite) {
             movieFavoriteIcon.setImageResource(R.drawable.ic_favorite_full)
@@ -63,6 +71,7 @@ class ResultActivity : AppCompatActivity(), MovieDetailsContract.View {
             adapter = reviewsAdapter
             layoutManager = LinearLayoutManager(context)
         }
+
     }
 
 

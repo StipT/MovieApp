@@ -1,5 +1,6 @@
 package com.tstipanic.movieapp.presentation
 
+import android.widget.ImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.tstipanic.movieapp.local_database.MovieRepo
 import com.tstipanic.movieapp.model.data.Movie
@@ -55,8 +56,8 @@ class SearchPresenter(
         }
     }
 
-    override fun onIntent(movie: Movie) {
-        view.initiateIntent(movie)
+    override fun onIntent(movie: Movie, sharedImageView: ImageView) {
+        view.initiateIntent(movie, sharedImageView)
     }
 
     override fun onFavoriteClicked(movie: Movie) {

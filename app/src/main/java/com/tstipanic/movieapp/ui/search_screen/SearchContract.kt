@@ -1,5 +1,6 @@
 package com.tstipanic.movieapp.ui.search_screen
 
+import android.widget.ImageView
 import com.tstipanic.movieapp.model.data.Movie
 
 interface SearchContract {
@@ -20,7 +21,7 @@ interface SearchContract {
 
         fun refreshList()
 
-        fun initiateIntent(movie: Movie)
+        fun initiateIntent(movie: Movie, sharedImageView: ImageView)
 
         fun showNoResultImage()
 
@@ -36,7 +37,7 @@ interface SearchContract {
 
         fun onFavoriteClicked(movie: Movie)
 
-        fun onIntent(movie: Movie)
+        fun onIntent(movie: Movie, sharedImageView: ImageView)
 
     }
 }

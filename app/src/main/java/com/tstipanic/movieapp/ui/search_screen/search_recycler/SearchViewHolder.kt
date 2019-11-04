@@ -1,6 +1,7 @@
 package com.tstipanic.movieapp.ui.search_screen.search_recycler
 
 import android.view.View
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.tstipanic.movieapp.R
 import com.tstipanic.movieapp.common.loadImage
@@ -10,7 +11,11 @@ import kotlinx.android.synthetic.main.item_search.*
 
 class SearchViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-    fun bindData(movie: Movie, onMovieClickListener: (Movie) -> Unit, onFavoriteClickListener: (Movie) -> Unit) {
+    fun bindData(
+        movie: Movie,
+        onMovieClickListener: (Movie, ImageView) -> Unit,
+        onFavoriteClickListener: (Movie) -> Unit
+    ) {
         searchMovieTitleText.text = movie.title
         searchRatingText.text = movie.averageVote.toString()
         searchDateText.text = movie.releaseDate
@@ -18,7 +23,8 @@ class SearchViewHolder(override val containerView: View) : RecyclerView.ViewHold
         if (movie.poster != null) {
             searchMovieImage.loadImage(movie.poster)
         }
-        containerView.setOnClickListener { onMovieClickListener(movie) }
+
+        containerView.setOnClickListener { onMovieClickListener(movie, searchMovieImage) }
 
         searchFavorite.setOnClickListener {
             onFavoriteClickListener(movie)

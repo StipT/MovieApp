@@ -32,11 +32,9 @@ class MoviesPagerFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         val movieList = arrayListOf<Movie>()
-         movieList.addAll(arguments?.getParcelableArrayList(PAGER_LIST_EXTRA)!!)
+        movieList.addAll(arguments?.getParcelableArrayList(PAGER_LIST_EXTRA)!!)
         moviePager.adapter = pagerAdapter
-
         pagerAdapter.setMovies(movieList)
         moviePager.currentItem = arguments?.getInt(PAGER_SELECTED_POSITION_EXTRA)!!
     }

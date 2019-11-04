@@ -58,7 +58,7 @@ class MovieDetailsFragment : Fragment(), MovieDetailsContract.View {
     }
 
     private fun initUi() {
-        movieImage.loadImage(movie.poster)
+        movieImagePoster.loadImage(movie.poster)
         movieTitle.text = movie.title
         movieOverview.text = movie.overview
         movieReleaseDate.text = movie.releaseDate

@@ -6,7 +6,7 @@
                                                    android:orientation="vertical">
 
     <ImageView
-            android:id="@+id/movieImage"
+            android:id="@+id/movieItemImage"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:scaleType="centerCrop"

@@ -3,12 +3,16 @@ package com.tstipanic.movieapp.ui.search_screen
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tstipanic.movieapp.R
 import com.tstipanic.movieapp.common.EXTRA_BOOLEAN
+import com.tstipanic.movieapp.common.EXTRA_IMAGE_TRANSITION_NAME
 import com.tstipanic.movieapp.common.EXTRA_OBJECT
 import com.tstipanic.movieapp.common.hideKeyboard
 import com.tstipanic.movieapp.model.data.Movie
@@ -21,7 +25,10 @@ import org.koin.android.ext.android.inject
 class SearchActivity : AppCompatActivity(), SearchContract.View {
 
     private val presenter by inject<SearchContract.Presenter>()
-    private val searchAdapter by lazy { SearchAdapter({ onMovieClicked(it) }, { presenter.onFavoriteClicked(it) }) }
+    private val searchAdapter by lazy {
+        SearchAdapter({ Movie, ImageView -> onMovieClicked(Movie, ImageView) }
+            , { presenter.onFavoriteClicked(it) })
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +72,7 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
     override fun setRecyclerList(movieList: List<Movie>) {
         searchAdapter.setMovies(movieList)
         searchAdapter.notifyDataSetChanged()
+
     }
 
     override fun showProgress() {
@@ -79,8 +87,8 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
         Toast.makeText(baseContext, message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun onMovieClicked(movie: Movie) {
-        presenter.onIntent(movie)
+    private fun onMovieClicked(movie: Movie, sharedImage: ImageView) {
+        presenter.onIntent(movie, sharedImage)
     }
 
     override fun refreshList() {
@@ -95,11 +103,14 @@ class SearchActivity : AppCompatActivity(), SearchContract.View {
         searchFavorite.setImageResource(R.drawable.ic_favorite_full)
     }
 
-    override fun initiateIntent(movie: Movie) {
+    override fun initiateIntent(movie: Movie, sharedImageView: ImageView) {
         val intent = Intent(this, ResultActivity::class.java)
         intent.putExtra(EXTRA_OBJECT, movie)
         intent.putExtra(EXTRA_BOOLEAN, movie.isFavorite)
-        startActivity(intent)
+        intent.putExtra(EXTRA_IMAGE_TRANSITION_NAME, ViewCompat.getTransitionName(sharedImageView))
+        val options = ActivityOptionsCompat
+            .makeSceneTransitionAnimation(this, sharedImageView, ViewCompat.getTransitionName(sharedImageView)!!)
+        startActivity(intent, options.toBundle())
     }
 
     override fun showNoResultImage() {
